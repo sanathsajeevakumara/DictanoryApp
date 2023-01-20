@@ -14,7 +14,6 @@ data class WordInfoDto(
         return WordInfo(
             meanings = meanings.map { it.toMeaning() },
             phonetic = phonetic,
-            sourceUrls = sourceUrls,
             word = word
         )
     }
