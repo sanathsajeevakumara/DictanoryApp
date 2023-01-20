@@ -1,20 +1,21 @@
 package com.sanathcoding.dictanoryapp.feature_dictionary.data.remote.dto.wordInfoDto
 
+import com.sanathcoding.dictanoryapp.feature_dictionary.data.local.entity.WordInfoEntity
 import com.sanathcoding.dictanoryapp.feature_dictionary.domain.model.WordInfo
 
 data class WordInfoDto(
     val license: LicenseDto,
     val meanings: List<MeaningDto>,
-    val phonetic: String?,
+    val phonetic: String,
     val phonetics: List<PhoneticDto>,
     val sourceUrls: List<String>,
-    val word: String?
+    val word: String
 ) {
-    fun toWordInfo(): WordInfo {
-        return WordInfo(
+    fun toWordInfoEntity(): WordInfoEntity {
+        return WordInfoEntity(
             meanings = meanings.map { it.toMeaning() },
-            phonetic = phonetic,
-            word = word
+            word = word,
+            phonetic = phonetic
         )
     }
 }
