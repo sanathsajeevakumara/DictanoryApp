@@ -1,8 +1,7 @@
 package com.sanathcoding.dictionaryapp.feature_dictionary.presentation
 
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sanathcoding.dictionaryapp.core.util.Resource
@@ -25,11 +24,11 @@ class WordInfoViewModel @Inject constructor(
         println("FetchWordInfoSearchHandler Exception $throwable")
     }
 
-    var searchQuery by mutableStateOf("")
-        private set
+    private val _searchQuery = mutableStateOf("")
+    val searchQuery: State<String> = _searchQuery
 
-    var state by mutableStateOf(WordInfoState())
-        private set
+    private val _state = mutableStateOf(WordInfoState())
+    val state: State<WordInfoState> = _state
 
     private val _uiEvent =  MutableSharedFlow<UIEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
@@ -37,25 +36,31 @@ class WordInfoViewModel @Inject constructor(
     private var searchJob: Job? = null
 
     fun onSearch(query: String) {
-        searchQuery = query
+        _searchQuery.value = query
         searchJob?.cancel()
         searchJob = viewModelScope.launch(dispatcher + fetchDataStoreSearchDataHandler) {
             delay(500L)
             getWordInfo(query)
-                .onEach { resource ->
-                    when(resource) {
+                .onEach { result ->
+                    when(result) {
                         is Resource.Error -> {
-                            state.wordInfoItems = resource.data ?: emptyList()
-                            state.isLoading = false
+                            _state.value = state.value.copy(
+                                wordInfoItems = result.data ?: emptyList(),
+                                isLoading = false
+                            )
                             _uiEvent.emit(UIEvent.ShowSnackBar("Unknown Error"))
                         }
                         is Resource.Loading -> {
-                            state.wordInfoItems = resource.data ?: emptyList()
-                            state.isLoading = true
+                            _state.value = state.value.copy(
+                                wordInfoItems = result.data ?: emptyList(),
+                                isLoading = true
+                            )
                         }
                         is Resource.Success -> {
-                            state.wordInfoItems = resource.data ?: emptyList()
-                            state.isLoading = false
+                            _state.value = state.value.copy(
+                                wordInfoItems = result.data ?: emptyList(),
+                                isLoading = false
+                            )
                         }
                     }
                 }.launchIn(this)

@@ -15,7 +15,7 @@
         android:theme="@style/Theme.DictanoryApp"
         tools:targetApi="31">
         <activity
-            android:name="com.sanathcoding.dictionaryapp.MainActivity"
+            android:name="com.sanathcoding.dictionaryapp.feature_dictionary.presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.DictanoryApp">

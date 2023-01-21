@@ -1,10 +1,11 @@
 package com.sanathcoding.dictionaryapp.feature_dictionary.data.local
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.sanathcoding.dictionaryapp.feature_dictionary.data.local.entity.WordInfoEntity
-
+@Dao
 interface WordInfoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
