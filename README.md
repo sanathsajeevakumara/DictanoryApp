@@ -1,5 +1,6 @@
 # DictionaryApp
-Clean Architecture Dictionary App With Caching
+Clean Architecture Dictionary App With Caching. 
+Dictionary Api - https://dictionaryapi.dev/
 
 ## Technologies
 
